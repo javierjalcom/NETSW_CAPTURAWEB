@@ -1,0 +1,78 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+NETSW_CAPTURAWEB
+</name>
+</assembly>
+<members>
+<member name="T:NETSW_CAPTURAWEB.My.MyWebExtension">
+ <summary>
+ Módulo usado para definir las propiedades que están disponibles en el espacio de nombres My para proyectos web.
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:NETSW_CAPTURAWEB.My.MyWebExtension.Computer">
+ <summary>
+ Devuelve información sobre el equipo host.
+ </summary>
+</member>
+<member name="P:NETSW_CAPTURAWEB.My.MyWebExtension.User">
+ <summary>
+ Devuelve información del usuario web actual.
+ </summary>
+</member>
+<member name="P:NETSW_CAPTURAWEB.My.MyWebExtension.Request">
+ <summary>
+ Devuelve un objeto Request.
+ </summary>
+</member>
+<member name="P:NETSW_CAPTURAWEB.My.MyWebExtension.Response">
+ <summary>
+ Devuelve un objeto Response.
+ </summary>
+</member>
+<member name="P:NETSW_CAPTURAWEB.My.MyWebExtension.Log">
+ <summary>
+ Devuelve el objeto de registro Asp.
+ </summary>
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.UpdateVisitDriver(System.Int64,System.Int32,System.String,System.String,System.String,System.String,System.DateTime)">
+ end visit reception
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.SetMasterAdvToPENDVAL(System.Int32,System.String)">
+
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.SetDetailContainerAdvToPENDVAL(System.Int32,System.String,System.String)">
+
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.UpdateCompanyFiscalData(System.Int64,System.String,System.Int64,System.String,System.String,System.String,System.String,System.String,System.Int32,System.String,System.String,System.String)">
+ ''
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.SearchBookingAdviceDetail(System.Int32)">
+----
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.GetUNList">
+
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.GetMasterBookingValid_ByUserId(System.Int32)">
+   -----''''
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.GetISOCodeList">
+ ------------'''
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.SaveUser(System.String,System.String,System.Int32,System.Int32,System.String,System.String,System.String)">
+
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.GetVisitReceptionData(System.Int64)">
+-------
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.SelectVisitRecepPosition(System.Int64)">
+ 
+
+</member>
+<member name="M:NETSW_CAPTURAWEB.CapturaService.UpdateVisitPositionFromList(System.Int64,System.Data.DataTable,System.String)">
+
+</member>
+</members>
+</doc>
