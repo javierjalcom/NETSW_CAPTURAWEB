@@ -16159,6 +16159,10 @@ Public Class CapturaService
                     iolecmd_comand.Parameters.Add("@adtmCalcEndDate", OleDbType.Char)
                     iolecmd_comand.Parameters("@adtmCalcEndDate").Value = lstr_DateEndParam
 
+                    '''
+                    iolecmd_comand.Parameters.Add("@strSatusToSave", OleDbType.Char)
+                    iolecmd_comand.Parameters("@strSatusToSave").Value = lobj_item.strSaveStatus
+
                     ''''''
 
 
@@ -16724,6 +16728,8 @@ Public Class CapturaService
 
 
                     ''''''
+                    iolecmd_comand.Parameters.Add("@strSatusToSave", OleDbType.Char)
+                    iolecmd_comand.Parameters("@strSatusToSave").Value = lobj_item.strSaveStatus
 
                     '' nombre del sp 
                     strSQL = "spGenerateGCItemStorageFee"
