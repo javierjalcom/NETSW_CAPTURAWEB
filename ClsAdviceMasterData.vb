@@ -29,6 +29,13 @@
     'campo boleano de misma mercancia para todo embargue
     Public intblnIsUniqueMerchType As Integer
 
+    Public intInvoceToIdSO As Integer
+    Public intInvoceToSOType As Integer
+    Public intInvoceToIdDiscrp As Integer
+    Public intInvoceToDiscType As Integer
+    Public intInvoceToIdStorage As Integer
+    Public intInvoceToStoraType As Integer
+
     'arreglo de productos 
     Public iobjs_ContProductList() As ClsAdviceContainerProduct ' productos de contenedores 
 End Class
