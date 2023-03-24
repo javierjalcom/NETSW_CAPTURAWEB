@@ -16,8 +16,8 @@
     Public istr_ISOCodeText As String
     Public istr_ImageName As String
     Public istr_Comments As String
-
-
+    Public blnApplyIMO As Integer
+    Public blnApplyUN As Integer
 
 
 

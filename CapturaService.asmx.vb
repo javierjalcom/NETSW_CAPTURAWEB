@@ -2142,6 +2142,8 @@ Public Class CapturaService
         Dim larg_lint_Operation As Integer
         Dim larg_lstr_weigherId As String
         Dim larg_lstr_comments As String
+        Dim larg_lint_BlnApplyIMO As Integer
+        Dim larg_lint_BlnApplyUN As Integer
 
         '' crear tabla de resultados 
         Dim ldtb_ResultData As DataTable = New DataTable("DataResult")
@@ -2268,6 +2270,10 @@ Public Class CapturaService
         iolecmd_comand.Parameters.Add("@strISOCodeText", OleDbType.Char)
         iolecmd_comand.Parameters.Add("@strComments", OleDbType.Char)
 
+        iolecmd_comand.Parameters.Add("@blnApplyIMO", OleDbType.Integer)
+        iolecmd_comand.Parameters.Add("@blnApplyUN", OleDbType.Integer)
+
+
 
         'If aorigint_visit > 0 And alng_Visit > 0 Then
         '    Return dt_RetrieveErrorTable("-bloque CUAT ")
@@ -2301,6 +2307,9 @@ Public Class CapturaService
                 larg_lstrISOCodeText = alistobj_container(lint_idx).istr_ISOCodeText
                 larg_lstr_comments = alistobj_container(lint_idx).istr_Comments
 
+                larg_lint_BlnApplyIMO = alistobj_container(lint_idx).blnApplyIMO
+                larg_lint_BlnApplyUN = alistobj_container(lint_idx).blnApplyUN
+
                 lobj_resultstruct(lint_idx) = New ClsAdviceResult
 
                 lobj_resultstruct(lint_idx).iint_AdviceId = aint_AdviceBooking
@@ -2333,6 +2342,12 @@ Public Class CapturaService
                 iolecmd_comand.Parameters("@strISOCodeText").Value = larg_lstrISOCodeText
                 iolecmd_comand.Parameters("@strComments").Value = larg_lstr_comments
                 '''''
+                '''
+                iolecmd_comand.Parameters("@blnApplyIMO").Value = larg_lint_BlnApplyIMO
+                iolecmd_comand.Parameters("@blnApplyUN").Value = larg_lint_BlnApplyUN
+
+
+                ''''''
                 lstr_SQL = "spSaveContainerBookingAdv"
                 'definir que tipo de comando se va a ejecutar
                 iolecmd_comand.CommandType = CommandType.StoredProcedure
@@ -3162,6 +3177,8 @@ Public Class CapturaService
         Dim lrow_Result As DataRow
         Dim lstr_serviceType As String
 
+        Dim larg_lint_BlnApplyIMO As Integer
+        Dim larg_lint_BlnApplyUN As Integer
 
         ldtb_ResultData.TableName = "DataResult"
         ldtb_ResultData.Columns.Add("intBookingAdviceId", GetType(Integer))
@@ -3229,7 +3246,8 @@ Public Class CapturaService
         iolecmd_comand.Parameters.Add("@strISOCodeText", OleDbType.Char)
         iolecmd_comand.Parameters.Add("@strComments", OleDbType.Char)
 
-
+        iolecmd_comand.Parameters.Add("@blnApplyIMO", OleDbType.Integer)
+        iolecmd_comand.Parameters.Add("@blnApplyUN", OleDbType.Integer)
 
         'If aorigint_visit > 0 And alng_Visit > 0 Then
         '    Return dt_RetrieveErrorTable("-bloque CUAT ")
@@ -3264,6 +3282,9 @@ Public Class CapturaService
             iolecmd_comand.Parameters("@strWeigherId").Value = ""
             iolecmd_comand.Parameters("@strISOCodeText").Value = ""
             iolecmd_comand.Parameters("@strComments").Value = ""
+
+            iolecmd_comand.Parameters("@blnApplyIMO").Value = -1
+            iolecmd_comand.Parameters("@blnApplyUN").Value = -1
 
 
             '''''
@@ -3861,6 +3882,10 @@ Public Class CapturaService
         iolecmd_comand.Parameters.Add("@strISOCodeText", OleDbType.Char)
         iolecmd_comand.Parameters.Add("@strComments", OleDbType.Char)
 
+        iolecmd_comand.Parameters.Add("@blnApplyIMO", OleDbType.Integer)
+        iolecmd_comand.Parameters.Add("@blnApplyUN", OleDbType.Integer)
+
+
         'If aorigint_visit > 0 And alng_Visit > 0 Then
         '    Return dt_RetrieveErrorTable("-bloque CUAT ")
         'End If
@@ -3894,6 +3919,9 @@ Public Class CapturaService
             iolecmd_comand.Parameters("@strWeigherId").Value = ""
             iolecmd_comand.Parameters("@strISOCodeText").Value = ""
             iolecmd_comand.Parameters("@strComments").Value = ""
+
+            iolecmd_comand.Parameters("@blnApplyIMO").Value = -1
+            iolecmd_comand.Parameters("@blnApplyUN").Value = -1
 
             '''''
             lstr_SQL = "spSaveContainerBookingAdv"
@@ -4454,7 +4482,7 @@ Public Class CapturaService
     End Function
 
     <WebMethod()>
-    Public Function UpdateContainerAdviceV(ByVal aint_AdviceBooking As Integer, ByVal astr_container As String, ByVal aint_ContainerType As Integer, ByVal aint_ContainerSize As Integer, ByVal aint_ContainerISOode As Integer, ByVal aint_ShippingLine As Integer, ByVal adec_VGM As Decimal, ByVal aint_Full As Integer, ByVal astr_ValidStatus As String, ByVal astr_user As String, ByVal astr_sealnumber As String, ByVal adec_NETWeight As Decimal, ByVal astr_WeigherId As String, ByVal aint_IMOCode As Integer) As String
+    Public Function UpdateContainerAdviceV(ByVal aint_AdviceBooking As Integer, ByVal astr_container As String, ByVal aint_ContainerType As Integer, ByVal aint_ContainerSize As Integer, ByVal aint_ContainerISOode As Integer, ByVal aint_ShippingLine As Integer, ByVal adec_VGM As Decimal, ByVal aint_Full As Integer, ByVal astr_ValidStatus As String, ByVal astr_user As String, ByVal astr_sealnumber As String, ByVal adec_NETWeight As Decimal, ByVal astr_WeigherId As String, ByVal aint_IMOCode As Integer, ByVal aint_blnApplyIMO As Integer, ByVal aint_blnApplyUN As Integer) As String
 
         Dim lstr_result As String
         Dim lint_BookingAdvice As Integer
@@ -4555,6 +4583,13 @@ Public Class CapturaService
         iolecmd_comand.Parameters.Add("@strISOCodeText", OleDbType.Char)
         iolecmd_comand.Parameters.Add("@strComments", OleDbType.Char)
 
+
+        iolecmd_comand.Parameters.Add("@blnApplyIMO", OleDbType.Integer)
+        iolecmd_comand.Parameters.Add("@blnApplyUN", OleDbType.Integer)
+
+
+
+
         'If aorigint_visit > 0 And alng_Visit > 0 Then
         '    Return dt_RetrieveErrorTable("-bloque CUAT ")
         'End If
@@ -4591,6 +4626,12 @@ Public Class CapturaService
             iolecmd_comand.Parameters("@strWeigherId").Value = astr_WeigherId
             iolecmd_comand.Parameters("@strISOCodeText").Value = ""
             iolecmd_comand.Parameters("@strComments").Value = ""
+
+
+
+            iolecmd_comand.Parameters("@blnApplyIMO").Value = aint_blnApplyIMO
+            iolecmd_comand.Parameters("@blnApplyUN").Value = aint_blnApplyUN
+
 
             '''''
             lstr_SQL = "spSaveContainerBookingAdv"
@@ -6927,39 +6968,61 @@ Public Class CapturaService
 
 
         'Sentencia SQL 
-        strSQL = " SELECT ISNULL(tblclsBookingAdvice.intBookingAdviceId,0)  AS 'intBookingAdviceId' , " &
-                 "        ISNULL(tblclsBookingAdvice.strBookingId,'')       AS 'strBookingId',   " &
-                 "        ISNULL(tblclsBookingAdvice.strVesselName,'')      AS 'strVesselName',  " &
-                 "        ISNULL(tblclsBookingAdvice.strVoyageExpoId,'')    AS 'strVoyageExpoId', " &
-                 "        ISNULL(tblclsBookingAdvice.intVesselId,0)         AS 'intVesselId'  , " &
-                 "        ISNULL(tblclsBookingAdvice.intVesselVoyageId,0)   AS 'intVesselVoyageId', " &
-                 "        ISNULL(tblclsBookingAdvice.strPortText ,'')       AS 'strPortText',  " &
-                 "        ISNULL(tblclsBookingAdvice.strPortId ,'')         AS 'strPortId', " &
-                 "        ISNULL(tblclsBookingAdvice.strCountryTxt ,'')     AS 'strCountryTxt', " &
-                 "        ISNULL(tblclsBookingAdvice.strCountryId ,'')      AS 'strCountryId'," &
-                 "        ISNULL(tblclsBookingAdvice.dtmETADate ,'19000101 00:00')        AS 'dtmETADate'," &
-                 "        ISNULL(tblclsBookingAdvice.strCustomerTxt ,'')    AS 'strCustomerTxt'," &
-                 "        ISNULL(tblclsBookingAdvice.intCustomerId,0)       AS 'intCustomerId' ," &
-                 "        ISNULL(tblclsBookingAdvice.intCustomBrokerId,0)   AS 'intCustomBrokerId'   ," &
-                 "        ISNULL(tblclsBookingAdvice.strShippingLinetxt,'') AS 'strShippingLinetxt'  ," &
-                 "        ISNULL(tblclsBookingAdvice.intShippingLine,0)     AS 'intShippingLine'     ," &
-                 "        ISNULL(tblclsBookingAdvice.strProductText,'')     AS 'strProductText'      ," &
-                 "        ISNULL(tblclsBookingAdvice.intProductId,0)        AS 'intProductId'        ," &
-                 "        ISNULL(tblclsBookingAdvice.intIMOCode,0)          AS 'intIMOCode'          ," &
-                 "        ISNULL(tblclsBookingAdvice.intUNCode,0)           AS 'intUNCode'           ," &
-                 "        ISNULL(tblclsBookingAdvice.strServiceType,'')     AS 'strServiceType'      ," &
-                 "        ISNULL(tblclsBookingAdvice.blnIsValidBooking,'')   AS 'blnIsValidBooking'   ," &
-                 "        ISNULL(tblclsBookingAdvice.blnIsValidByShipper,0) AS 'blnIsValidByShipper' ," &
-                 "        ISNULL(tblclsBookingAdvice.strAdviceComments, '')  AS 'strAdviceComments',   " &
-                 "        ISNULL(tblclsBookingAdvice.blnIsFromCalathus, 0)  AS 'blnIsFromCalathus'   " &
-                 "        FROM tblclsBookingAdvice                              " &
-                 "  WHERE tblclsBookingAdvice.strBookingId = '" + astr_booking + "'"
+        'strSQL = " SELECT ISNULL(tblclsBookingAdvice.intBookingAdviceId,0)  AS 'intBookingAdviceId' , " &
+        '         "        ISNULL(tblclsBookingAdvice.strBookingId,'')       AS 'strBookingId',   " &
+        '         "        ISNULL(tblclsBookingAdvice.strVesselName,'')      AS 'strVesselName',  " &
+        '         "        ISNULL(tblclsBookingAdvice.strVoyageExpoId,'')    AS 'strVoyageExpoId', " &
+        '         "        ISNULL(tblclsBookingAdvice.intVesselId,0)         AS 'intVesselId'  , " &
+        '         "        ISNULL(tblclsBookingAdvice.intVesselVoyageId,0)   AS 'intVesselVoyageId', " &
+        '         "        ISNULL(tblclsBookingAdvice.strPortText ,'')       AS 'strPortText',  " &
+        '         "        ISNULL(tblclsBookingAdvice.strPortId ,'')         AS 'strPortId', " &
+        '         "        ISNULL(tblclsBookingAdvice.strCountryTxt ,'')     AS 'strCountryTxt', " &
+        '         "        ISNULL(tblclsBookingAdvice.strCountryId ,'')      AS 'strCountryId'," &
+        '         "        ISNULL(tblclsBookingAdvice.dtmETADate ,'19000101 00:00')        AS 'dtmETADate'," &
+        '         "        ISNULL(tblclsBookingAdvice.strCustomerTxt ,'')    AS 'strCustomerTxt'," &
+        '         "        ISNULL(tblclsBookingAdvice.intCustomerId,0)       AS 'intCustomerId' ," &
+        '         "        ISNULL(tblclsBookingAdvice.intCustomBrokerId,0)   AS 'intCustomBrokerId'   ," &
+        '         "        ISNULL(tblclsBookingAdvice.strShippingLinetxt,'') AS 'strShippingLinetxt'  ," &
+        '         "        ISNULL(tblclsBookingAdvice.intShippingLine,0)     AS 'intShippingLine'     ," &
+        '         "        ISNULL(tblclsBookingAdvice.strProductText,'')     AS 'strProductText'      ," &
+        '         "        ISNULL(tblclsBookingAdvice.intProductId,0)        AS 'intProductId'        ," &
+        '         "        ISNULL(tblclsBookingAdvice.intIMOCode,0)          AS 'intIMOCode'          ," &
+        '         "        ISNULL(tblclsBookingAdvice.intUNCode,0)           AS 'intUNCode'           ," &
+        '         "        ISNULL(tblclsBookingAdvice.strServiceType,'')     AS 'strServiceType'      ," &
+        '         "        ISNULL(tblclsBookingAdvice.blnIsValidBooking,'')   AS 'blnIsValidBooking'   ," &
+        '         "        ISNULL(tblclsBookingAdvice.blnIsValidByShipper,0) AS 'blnIsValidByShipper' ," &
+        '         "        ISNULL(tblclsBookingAdvice.strAdviceComments, '')  AS 'strAdviceComments',   " &
+        '         "        ISNULL(tblclsBookingAdvice.blnIsFromCalathus, 0)  AS 'blnIsFromCalathus'   " &
+        '         "        FROM tblclsBookingAdvice                              " &
+        '         "  WHERE tblclsBookingAdvice.strBookingId = '" + astr_booking + "'"
+
+
+
+        idt_result = New DataTable("VisitData")
+        strSQL = "spGetBKMasterAdvice"
+
+        iolecmd_comand.Parameters.Add("@aint_AdviceId", OleDbType.Integer)
+        iolecmd_comand.Parameters("@aint_AdviceId").Value = 0
+
+        iolecmd_comand.Parameters.Add("@strBooking", OleDbType.Char)
+        iolecmd_comand.Parameters("@strBooking").Value = astr_booking
+
+        iolecmd_comand.Parameters.Add("@intOption", OleDbType.Integer)
+        iolecmd_comand.Parameters("@intOption").Value = 1
+
+        iolecmd_comand.Parameters.Add("@aint_Param4", OleDbType.Integer)
+        iolecmd_comand.Parameters("@aint_Param4").Value = 0
+
+        iolecmd_comand.Parameters.Add("@astr_Param5", OleDbType.Char)
+        iolecmd_comand.Parameters("@astr_Param5").Value = ""
+
 
         iolecmd_comand.CommandText = strSQL
-
-        iAdapt_comand.SelectCommand = iolecmd_comand
+        iolecmd_comand.CommandType = CommandType.StoredProcedure
+        iolecmd_comand.CommandTimeout = 99999
 
         Try
+            iAdapt_comand.SelectCommand = iolecmd_comand
             iolecmd_comand.Connection.Open()
             iAdapt_comand.SelectCommand.CommandTimeout = of_getMaxTimeout()
 
