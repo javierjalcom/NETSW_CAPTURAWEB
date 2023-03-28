@@ -18,8 +18,8 @@
     Public istr_Comments As String
     Public blnApplyIMO As Integer
     Public blnApplyUN As Integer
-
-
-
+    Public intVisitBack As Integer
+    Public intSOBack As Integer
+    Public intVisitBooking As Integer
 
 End Class
