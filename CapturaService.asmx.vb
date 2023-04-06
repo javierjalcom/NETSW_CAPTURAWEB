@@ -1530,7 +1530,7 @@ Public Class CapturaService
         '''''''--------------------------------------------------
 
         lstr_result = ""
-        lstr_result = of_SaveMasterAdvice(aobj_Advice.iint_AdviceId, aobj_Advice.istr_BookingId, aobj_Advice.istr_Vessel, aobj_Advice.istr_ExpoId, aobj_Advice.iint_VesselId, 0, aobj_Advice.istr_portText, aobj_Advice.istr_portId, aobj_Advice.istr_CountryTxt, aobj_Advice.istr_CountryId, lstr_ETAdate, aobj_Advice.istr_CustomerTxt, aobj_Advice.iint_CustomerId, aobj_Advice.iint_BrokerId, aobj_Advice.istr_ShippingLineTxt, aobj_Advice.iint_ShippingLineId, aobj_Advice.istr_product, aobj_Advice.iint_ProductId, aobj_Advice.iint_IMOCodeId, aobj_Advice.iint_UNCodeId, aobj_Advice.istr_serviceTipe, aobj_Advice.istr_AdviceComms, astr_userId, aobj_Advice.intblnIsUniqueMerchType, aobj_Advice.intInvoceToIdSO, aobj_Advice.intInvoceToSOType, aobj_Advice.intInvoceToIdDiscrp, aobj_Advice.intInvoceToDiscType, aobj_Advice.intInvoceToIdStorage, aobj_Advice.intInvoceToStoraType)
+        lstr_result = of_SaveMasterAdvice(aobj_Advice.iint_AdviceId, aobj_Advice.istr_BookingId, aobj_Advice.istr_Vessel, aobj_Advice.istr_ExpoId, aobj_Advice.iint_VesselId, aobj_Advice.intVesselVoyageId, aobj_Advice.istr_portText, aobj_Advice.istr_portId, aobj_Advice.istr_CountryTxt, aobj_Advice.istr_CountryId, lstr_ETAdate, aobj_Advice.istr_CustomerTxt, aobj_Advice.iint_CustomerId, aobj_Advice.iint_BrokerId, aobj_Advice.istr_ShippingLineTxt, aobj_Advice.iint_ShippingLineId, aobj_Advice.istr_product, aobj_Advice.iint_ProductId, aobj_Advice.iint_IMOCodeId, aobj_Advice.iint_UNCodeId, aobj_Advice.istr_serviceTipe, aobj_Advice.istr_AdviceComms, astr_userId, aobj_Advice.intblnIsUniqueMerchType, aobj_Advice.intInvoceToIdSO, aobj_Advice.intInvoceToSOType, aobj_Advice.intInvoceToIdDiscrp, aobj_Advice.intInvoceToDiscType, aobj_Advice.intInvoceToIdStorage, aobj_Advice.intInvoceToStoraType)
 
         '' guardar master 
 
@@ -7980,7 +7980,8 @@ Public Class CapturaService
         'Sentencia SQL 
         strSQL = " SELECT tblclsUNCode.intUNCodeId ,  " &
                  "        tblclsUNCode.strUNCodeIdentifier " &
-                 " FROM tblclsUNCode "
+                 " FROM tblclsUNCode " &
+                 " ORDER BY tblclsUNCode.strUNCodeIdentifier ASC "
 
         iolecmd_comand.CommandText = strSQL
 
@@ -8762,74 +8763,89 @@ Public Class CapturaService
 
 
         'Sentencia SQL 
-        strSQL = " SELECT  ISNULL(intBookingAdviceId,0) AS 'intBookingAdviceId', " &
-                 " 	       ISNULL(strBookingId,'')     AS 'strBookingId',   " &
-                 "         ISNULL(strVesselName,'')    AS 'strVesselName' ," &
-                 "         ISNULL(strVoyageExpoId,'')  AS 'strVoyageExpoId', " &
-                 "         ISNULL(intVesselId, 0 )     AS 'intVesselId', " &
-                 "         ISNULL(intVesselVoyageId,0) AS 'intVesselVoyageId', " &
-                 "	       ISNULL(strPortText,'')      AS 'strPortText', " &
-                 "    	   ISNULL(strPortId, '')       AS 'strPortId', " &
-                 "         ISNULL(strCountryTxt,'' )   AS 'strCountryTxt',  " &
-                 "         ISNULL(strCountryId,'')     AS 'strCountryId', " &
-                 "         ISNULL(dtmETADate,'19000101 00:00') AS 'dtmETADate', " &
-                 "	       ISNULL(strCustomerTxt,'')  AS 'strCustomerTxt',  " &
-                 "	       ISNULL(tblclsBookingAdvice.intCustomerId,0)    AS 'intCustomerId',  " &
-                 "         ISNULL(tblclsBookingAdvice.intCustomBrokerId,0)   AS 'intCustomBrokerId',  " &
-                 "         ISNULL(strShippingLinetxt,'') AS 'strShippingLinetxt', " &
-                 "         ISNULL(intShippingLine, 0 )  AS 'intShippingLine', " &
-                 "         ISNULL(	strProductText,'')  AS   'strProductText', " &
-                 "         ISNULL(	intProductId, 0 )   AS   'intProductId', " &
-                 "         ISNULL(	tblclsBookingAdvice.intIMOCode,   0 )   AS   'intIMOCode',   " &
-                 "         ISNULL(  tblclsIMOCode.strIMOCodeIdentifier , '' ) AS 'strIMOCodeIdentifier' , " &
-                 "         ISNULL(	tblclsBookingAdvice.intUNCode,    0 )   AS   'intUNCode', " &
-                 "         ISNULL(	tblclsUNCode.strUNCodeIdentifier,    '' )   AS   'strUNCodeIdentifier', " &
-                 "         ISNULL(	strServiceType,'')   AS   'strServiceType', " &
-                 "         ISNULL(	blnIsValidBooking,'') AS 'blnIsValidBooking', " &
-                 "         ISNULL( blnIsValidByShipper,0) AS 'blnIsValidByShipper', " &
-                 "         ISNULL(	blnIsFromCalathus,0) AS 'blnIsFromCalathus',  " &
-                 "         ISNULL(	strBkAdviceCreatedBy,'') AS 'strBkAdviceCreatedBy', " &
-                 "         ISNULL(	dtmABkAdviceCreationStamp,'19000101 00:00') AS 'dtmABkAdviceCreationStamp',  " &
-                 "         ISNULL(	strAdviceComments,'') AS 'strAdviceComments'  " &
-                 "         ,ISNULL(tblclsCustomBroker.intCompanyId ,0) AS 'intCompanyId' " &
-                 "         , ISNULL(CUSTCOMP.strCompanyName ,'') AS 'strCustomCompany' " &
-                 "      ,ISNULL(tblclsVIPCustomers.blnActive ,0) as 'blnIsCustomVIP' " &
-                 "      ,ISNULL(tblclsBookingAdvice.strUserToReview ,'') as 'strUserToReview' " &
-                 "   FROM    tblclsBookingAdvice  " &
-                 "   LEFT JOIN tblclsIMOCode ON tblclsBookingAdvice.intIMOCode = tblclsIMOCode.intIMOCodeId " &
-                 "   LEFT JOIN tblclsUNCode  ON tblclsBookingAdvice.intUNCode =   tblclsUNCode.intUNCodeId " &
-                 "   LEFT JOIN tblclsCustomBroker ON tblclsCustomBroker.intCustomBrokerId = tblclsBookingAdvice.intCustomBrokerId " &
-                 "   LEFT JOIN tblclsCustomer ON tblclsBookingAdvice.intCustomerId = tblclsCustomer.intCustomerId " &
-                 "   LEFT JOIN tblclsCompanyEntity ON  tblclsCompanyEntity.intCompanyEntityId =  tblclsCustomer.intCustomerId " &
-                 "                     AND tblclsCompanyEntity.intCustomerTypeId =1 " &
-                  "     LEFT JOIN tblclsCompany CUSTCOMP ON CUSTCOMP.intCompanyId = tblclsCompanyEntity.intCompanyId " &
-                 "   LEFT JOIN tblclsVIPCustomers ON tblclsVIPCustomers.intCustomerId = tblclsCustomer.intCustomerId " &
-                 " WHERE blnIsValidBooking = 'PENDVAL' " &
-                 " AND   blnIsValidByShipper = 0 "
+        'strSQL = " SELECT  ISNULL(intBookingAdviceId,0) AS 'intBookingAdviceId', " &
+        '         " 	       ISNULL(strBookingId,'')     AS 'strBookingId',   " &
+        '         "         ISNULL(strVesselName,'')    AS 'strVesselName' ," &
+        '         "         ISNULL(strVoyageExpoId,'')  AS 'strVoyageExpoId', " &
+        '         "         ISNULL(tblclsBookingAdvice.intVesselId, 0 )     AS 'intVesselId', " &
+        '         "         ISNULL(tblclsBookingAdvice.intVesselVoyageId,0) AS 'intVesselVoyageId', " &
+        '         "	       ISNULL(strPortText,'')      AS 'strPortText', " &
+        '         "    	   ISNULL(strPortId, '')       AS 'strPortId', " &
+        '         "         ISNULL(strCountryTxt,'' )   AS 'strCountryTxt',  " &
+        '         "         ISNULL(strCountryId,'')     AS 'strCountryId', " &
+        '         "         ISNULL(dtmETADate,'19000101 00:00') AS 'dtmETADate', " &
+        '         "	       ISNULL(strCustomerTxt,'')  AS 'strCustomerTxt',  " &
+        '         "	       ISNULL(tblclsBookingAdvice.intCustomerId,0)    AS 'intCustomerId',  " &
+        '         "         ISNULL(tblclsBookingAdvice.intCustomBrokerId,0)   AS 'intCustomBrokerId',  " &
+        '         "         ISNULL(strShippingLinetxt,'') AS 'strShippingLinetxt', " &
+        '         "         ISNULL(intShippingLine, 0 )  AS 'intShippingLine', " &
+        '         "         ISNULL(	strProductText,'')  AS   'strProductText', " &
+        '         "         ISNULL(	intProductId, 0 )   AS   'intProductId', " &
+        '         "         ISNULL(	tblclsBookingAdvice.intIMOCode,   0 )   AS   'intIMOCode',   " &
+        '         "         ISNULL(  tblclsIMOCode.strIMOCodeIdentifier , '' ) AS 'strIMOCodeIdentifier' , " &
+        '         "         ISNULL(	tblclsBookingAdvice.intUNCode,    0 )   AS   'intUNCode', " &
+        '         "         ISNULL(	tblclsUNCode.strUNCodeIdentifier,    '' )   AS   'strUNCodeIdentifier', " &
+        '         "         ISNULL(	strServiceType,'')   AS   'strServiceType', " &
+        '         "         ISNULL(	blnIsValidBooking,'') AS 'blnIsValidBooking', " &
+        '         "         ISNULL( blnIsValidByShipper,0) AS 'blnIsValidByShipper', " &
+        '         "         ISNULL(	blnIsFromCalathus,0) AS 'blnIsFromCalathus',  " &
+        '         "         ISNULL(	strBkAdviceCreatedBy,'') AS 'strBkAdviceCreatedBy', " &
+        '         "         ISNULL(	dtmABkAdviceCreationStamp,'19000101 00:00') AS 'dtmABkAdviceCreationStamp',  " &
+        '         "         ISNULL(	strAdviceComments,'') AS 'strAdviceComments'  " &
+        '         "         ,ISNULL(tblclsCustomBroker.intCompanyId ,0) AS 'intCompanyId' " &
+        '         "         , ISNULL(CUSTCOMP.strCompanyName ,'') AS 'strCustomCompany' " &
+        '         "         ,ISNULL(tblclsVIPCustomers.blnActive ,0) as 'blnIsCustomVIP' " &
+        '         "        ,ISNULL(tblclsBookingAdvice.strUserToReview ,'') as 'strUserToReview' " &
+        '         "        ,ISNULL(tblclsVesselVoyage.strVesselVoyageExpoIdentifier ,'') as 'strVesselVoyageExpoIdentifier' " &
+        '         "   FROM    tblclsBookingAdvice  " &
+        '         "   LEFT JOIN tblclsIMOCode ON tblclsBookingAdvice.intIMOCode = tblclsIMOCode.intIMOCodeId " &
+        '         "   LEFT JOIN tblclsUNCode  ON tblclsBookingAdvice.intUNCode =   tblclsUNCode.intUNCodeId " &
+        '         "   LEFT JOIN tblclsCustomBroker ON tblclsCustomBroker.intCustomBrokerId = tblclsBookingAdvice.intCustomBrokerId " &
+        '         "   LEFT JOIN tblclsCustomer ON tblclsBookingAdvice.intCustomerId = tblclsCustomer.intCustomerId " &
+        '         "   LEFT JOIN tblclsCompanyEntity ON  tblclsCompanyEntity.intCompanyEntityId =  tblclsCustomer.intCustomerId " &
+        '         "                     AND tblclsCompanyEntity.intCustomerTypeId =1 " &
+        '          "     LEFT JOIN tblclsCompany CUSTCOMP ON CUSTCOMP.intCompanyId = tblclsCompanyEntity.intCompanyId " &
+        '         "   LEFT JOIN tblclsVIPCustomers ON tblclsVIPCustomers.intCustomerId = tblclsCustomer.intCustomerId " &
+        '         "   LEFT JOIN tblclsVesselVoyage ON tblclsVesselVoyage.intVesselVoyageId = tblclsBookingAdvice.intVesselVoyageId " &
+        '         " WHERE blnIsValidBooking = 'PENDVAL' " &
+        '         " AND   blnIsValidByShipper = 0 "
 
+
+
+        'iolecmd_comand.CommandText = strSQL
+
+        'iAdapt_comand.SelectCommand = iolecmd_comand
+
+
+        idt_result = New DataTable("Result")
+        strSQL = "spGetBookingMasterList"
+
+        iolecmd_comand.Parameters.Add("@intBookingAdviceId", OleDbType.Integer)
+        iolecmd_comand.Parameters.Add("@intApplyFilter", OleDbType.Integer)
+        iolecmd_comand.Parameters.Add("@intShowCountersIn", OleDbType.Integer)
+        iolecmd_comand.Parameters.Add("@intUserId", OleDbType.Integer)
+
+        iolecmd_comand.Parameters("@intBookingAdviceId").Value = 0
+        iolecmd_comand.Parameters("@intApplyFilter").Value = 20
+        iolecmd_comand.Parameters("@intShowCountersIn").Value = 0
+        iolecmd_comand.Parameters("@intUserId").Value = 0
 
 
         iolecmd_comand.CommandText = strSQL
-
-        iAdapt_comand.SelectCommand = iolecmd_comand
+        iolecmd_comand.CommandType = CommandType.StoredProcedure
+        iolecmd_comand.CommandTimeout = 99999
 
         Try
-            iolecmd_comand.Connection.Open()
+            iAdapt_comand.SelectCommand = iolecmd_comand
 
             iAdapt_comand.SelectCommand.CommandTimeout = of_getMaxTimeout()
             iAdapt_comand.Fill(idt_result)
         Catch ex As Exception
-            Dim strError As String
-            strError = ObtenerError(ex.Message, 99999)
+            Dim strError As String = ObtenerError(ex.Message, 99999)
+            strError = strError
+            strError = ex.Message
         Finally
-            iolecmd_comand.Connection.Close()
-            iAdapt_comand.SelectCommand.Connection.Close()
             ioleconx_conexion.Close()
-
-            iolecmd_comand.Connection.Dispose()
-            iAdapt_comand.SelectCommand.Connection.Dispose()
-            ioleconx_conexion.Dispose()
-
         End Try
 
 
@@ -8838,6 +8854,8 @@ Public Class CapturaService
         ioleconx_conexion = Nothing
 
         Return idt_result
+
+
     End Function
 
 

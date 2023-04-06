@@ -36,6 +36,13 @@
     Public intInvoceToIdStorage As Integer
     Public intInvoceToStoraType As Integer
 
+    Public intVesselVoyageId As Integer
+    Public strVesselVoyageExpoIdentifier As String
+
+    Public strCompanyInvoce As String
+    Public strCompanyDiscrepancy As String
+    Public strCompanyStorage As String
+
     'arreglo de productos 
     Public iobjs_ContProductList() As ClsAdviceContainerProduct ' productos de contenedores 
 End Class
