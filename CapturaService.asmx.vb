@@ -1517,6 +1517,8 @@ Public Class CapturaService
         '' '' converitir a fecha        
         Dim timeFormat As String = "dd/MM/yyyy HH:mm:ss"
         Dim lstr_ETAdate As String
+
+        Dim lobj_resultAdvicem As ClsAdviceResult = New ClsAdviceResult()
         ' de string  con inicio dia  a objeto fecha
         Try
             adtm_ETADate = Convert.ToDateTime(aobj_Advice.istr_ETA_Date).ToString(timeFormat)
@@ -1529,12 +1531,18 @@ Public Class CapturaService
 
         '''''''--------------------------------------------------
 
-        lstr_result = ""
-        lstr_result = of_SaveMasterAdvice(aobj_Advice.iint_AdviceId, aobj_Advice.istr_BookingId, aobj_Advice.istr_Vessel, aobj_Advice.istr_ExpoId, aobj_Advice.iint_VesselId, aobj_Advice.intVesselVoyageId, aobj_Advice.istr_portText, aobj_Advice.istr_portId, aobj_Advice.istr_CountryTxt, aobj_Advice.istr_CountryId, lstr_ETAdate, aobj_Advice.istr_CustomerTxt, aobj_Advice.iint_CustomerId, aobj_Advice.iint_BrokerId, aobj_Advice.istr_ShippingLineTxt, aobj_Advice.iint_ShippingLineId, aobj_Advice.istr_product, aobj_Advice.iint_ProductId, aobj_Advice.iint_IMOCodeId, aobj_Advice.iint_UNCodeId, aobj_Advice.istr_serviceTipe, aobj_Advice.istr_AdviceComms, astr_userId, aobj_Advice.intblnIsUniqueMerchType, aobj_Advice.intInvoceToIdSO, aobj_Advice.intInvoceToSOType, aobj_Advice.intInvoceToIdDiscrp, aobj_Advice.intInvoceToDiscType, aobj_Advice.intInvoceToIdStorage, aobj_Advice.intInvoceToStoraType)
+        lobj_resultAdvicem.iint_AdviceId = 0
+        lobj_resultAdvicem.iint_Succes = 0
+        lobj_resultAdvicem.istrKeyToken = ""
+        lobj_resultAdvicem.istr_Container = ""
+        lobj_resultAdvicem.istr_Message = ""
+
+        lobj_resultAdvicem = of_SaveMasterAdvice(aobj_Advice.iint_AdviceId, aobj_Advice.istr_BookingId, aobj_Advice.istr_Vessel, aobj_Advice.istr_ExpoId, aobj_Advice.iint_VesselId, aobj_Advice.intVesselVoyageId, aobj_Advice.istr_portText, aobj_Advice.istr_portId, aobj_Advice.istr_CountryTxt, aobj_Advice.istr_CountryId, lstr_ETAdate, aobj_Advice.istr_CustomerTxt, aobj_Advice.iint_CustomerId, aobj_Advice.iint_BrokerId, aobj_Advice.istr_ShippingLineTxt, aobj_Advice.iint_ShippingLineId, aobj_Advice.istr_product, aobj_Advice.iint_ProductId, aobj_Advice.iint_IMOCodeId, aobj_Advice.iint_UNCodeId, aobj_Advice.istr_serviceTipe, aobj_Advice.istr_AdviceComms, astr_userId, aobj_Advice.intblnIsUniqueMerchType, aobj_Advice.intInvoceToIdSO, aobj_Advice.intInvoceToSOType, aobj_Advice.intInvoceToIdDiscrp, aobj_Advice.intInvoceToDiscType, aobj_Advice.intInvoceToIdStorage, aobj_Advice.intInvoceToStoraType)
 
         '' guardar master 
 
-        If lstr_result.Length = 0 Then
+        'If lstr_result.Length = 0 Then
+        If lobj_resultAdvicem.iint_AdviceId = 0 Then
             '   Return dt_RetrieveErrorTable("Error 3002 al guardar aviso ") ' no hay numero de visita 
             ReDim lobj_list(0)
             lobj_list(0) = New ClsAdviceResult()
@@ -1549,19 +1557,20 @@ Public Class CapturaService
             lobj_resultitem.iint_Succes = 0
             lobj_resultitem.istr_Container = ""
             lobj_resultitem.istr_Message = "Error 3002 al guardar aviso "
+
             llist_toReturn.Add(lobj_resultitem)
 
             Return llist_toReturn
 
         End If
-        '''' validar el visita 
-        If of_HasOnlyDigits(lstr_result) = False Then
+        '''' validar el booking 
+        If lobj_resultAdvicem.istr_Message.Length > 0 Then
             ReDim lobj_list(0)
             lobj_list(0) = New ClsAdviceResult()
             lobj_list(0).iint_AdviceId = 0
             lobj_list(0).iint_Succes = 0
             lobj_list(0).istr_Container = ""
-            lobj_list(0).istr_Message = lstr_result
+            lobj_list(0).istr_Message = lobj_resultAdvicem.istr_Message
 
             'Return lobj_list
 
@@ -1569,7 +1578,7 @@ Public Class CapturaService
             lobj_resultitem.iint_AdviceId = 0
             lobj_resultitem.iint_Succes = 0
             lobj_resultitem.istr_Container = ""
-            lobj_resultitem.istr_Message = lstr_result
+            lobj_resultitem.istr_Message = lobj_resultAdvicem.istr_Message
             llist_toReturn.Add(lobj_resultitem)
 
             Return llist_toReturn
@@ -1578,7 +1587,7 @@ Public Class CapturaService
 
         '' obtener el numero de aviso 
         Try
-            lint_BookingAdvice = CType(lstr_result, Long)
+            lint_BookingAdvice = lobj_resultAdvicem.iint_AdviceId
             If lint_BookingAdvice = 0 Then
                 lint_BookingAdvice = 0
             End If
@@ -1588,14 +1597,14 @@ Public Class CapturaService
             lobj_list(0) = New ClsAdviceResult()
             lobj_list(0).iint_AdviceId = 0
             lobj_list(0).iint_Succes = 0
-            lobj_list(0).istr_Message = "Error" + lstr_result
+            lobj_list(0).istr_Message = "Error" + lobj_resultAdvicem.istr_Message
             'Return lobj_list
 
             lobj_resultitem = New ClsAdviceResult()
             lobj_resultitem.iint_AdviceId = 0
             lobj_resultitem.iint_Succes = 0
             lobj_resultitem.istr_Container = ""
-            lobj_resultitem.istr_Message = "Error" + lstr_result
+            lobj_resultitem.istr_Message = "Error" + lobj_resultAdvicem.istr_Message
             llist_toReturn.Add(lobj_resultitem)
             Return llist_toReturn
 
@@ -1619,21 +1628,21 @@ Public Class CapturaService
         If aobj_Advice.iint_AdviceId = 0 Then
 
             ' si el valor de retorno 
-            If lstr_result.Length > 0 Then
+            If lobj_resultAdvicem.istr_Message > 0 Then
                 '    Return dt_RetrieveErrorTable("Error" + lstr_result)
                 ReDim lobj_list(0)
                 lobj_list(0) = New ClsAdviceResult()
                 lobj_list(0).iint_AdviceId = 0
                 lobj_list(0).iint_Succes = 0
                 lobj_list(0).istr_Container = ""
-                lobj_list(0).istr_Message = "Error" + lstr_result
+                lobj_list(0).istr_Message = "Error" + lobj_resultAdvicem.istr_Message
                 'Return lobj_list
 
                 lobj_resultitem = New ClsAdviceResult()
                 lobj_resultitem.iint_AdviceId = 0
                 lobj_resultitem.iint_Succes = 0
                 lobj_resultitem.istr_Container = ""
-                lobj_resultitem.istr_Message = "Error" + lstr_result
+                lobj_resultitem.istr_Message = "Error" + lobj_resultAdvicem.istr_Message
                 llist_toReturn.Add(lobj_resultitem)
                 Return llist_toReturn
 
@@ -1675,7 +1684,7 @@ Public Class CapturaService
             If aobj_Advice.iobjs_ContainerList.Count > 0 Then
 
                 'ldtb_TableResult = of_saveDetailAdvice(aobj_Advice.iint_AdviceId, aobj_Advice.iobjs_ContainerList, astr_userId)
-                llist_tempresutl = of_saveDetailAdvice(aobj_Advice.iint_AdviceId, aobj_Advice.iobjs_ContainerList, astr_userId)
+                llist_tempresutl = of_saveDetailAdvice(aobj_Advice.iint_AdviceId, aobj_Advice.iobjs_ContainerList, astr_userId, lobj_resultAdvicem.istrKeyToken)
 
                 'If ldtb_TableResult.Rows.Count = 1 And ldtb_TableResult.Columns.Count = 1 Then
                 'Return dt_RetrieveErrorTable(ldtb_TableResult(0)(0).ToString)
@@ -1685,6 +1694,7 @@ Public Class CapturaService
                 'Return dt_RetrieveErrorTable("Tablaxvv")
 
                 'Return ldtb_TableResult
+
                 Return llist_tempresutl
                 'Return dt_RetrieveErrorTable("Tablaxvv " + ldtb_TableResult(0)(0).ToString())
                 'si no hay 
@@ -1701,6 +1711,8 @@ Public Class CapturaService
                     lobj_resultitem.iint_Succes = 1
                     lobj_resultitem.istr_Container = ""
                     lobj_resultitem.istr_Message = ""
+                    lobj_resultitem.istrKeyToken = lobj_resultAdvicem.istrKeyToken
+
                     llist_toReturn.Add(lobj_resultitem)
                     Return llist_toReturn
 
@@ -1721,6 +1733,8 @@ Public Class CapturaService
                 lobj_list(0).iint_Succes = 1
                 lobj_list(0).istr_Container = ""
                 lobj_list(0).istr_Message = ""
+
+                lobj_list(0).istrKeyToken = lobj_resultAdvicem.istrKeyToken
                 ' Return ldtb_Table
                 'Return lobj_list
 
@@ -1729,6 +1743,8 @@ Public Class CapturaService
                 lobj_resultitem.iint_Succes = 1
                 lobj_resultitem.istr_Container = ""
                 lobj_resultitem.istr_Message = ""
+                lobj_resultitem.istrKeyToken = lobj_resultAdvicem.istrKeyToken
+
                 llist_toReturn.Add(lobj_resultitem)
                 Return llist_toReturn
             End If
@@ -1867,7 +1883,7 @@ Public Class CapturaService
     End Function
 
     '<WebMethod()> _
-    Public Function of_SaveMasterAdvice(ByVal aint_BookingAdviceId As Integer, ByVal astr_BookingId As String, ByVal astr_VesselName As String, ByVal astr_VoyageExpoId As String, ByVal aint_VesselId As String, ByVal alng_VesselVoyageId As Long, ByVal astr_PortText As String, ByVal astr_PortId As String, ByVal astr_CountryTxt As String, ByVal astr_CountryId As String, ByVal astr_ETAtDate As String, ByVal astr_CustomerTxt As String, ByVal aint_CustomerId As Integer, ByVal aint_CustomBrokerId As Integer, ByVal astr_ShippingLinetxt As String, ByVal aint_ShippingLine As Integer, ByVal astr_ProductText As String, ByVal aint_ProductId As Integer, ByVal aint_IMOCode As Integer, ByVal aint_UNCode As Integer, ByVal astr_ServiceType As String, ByVal astr_AdviceComs As String, ByVal astr_User As String, ByVal aint_BlnIsSingleMerchaType As Integer, aintInvoceToIdSO As Integer, aintInvoceToSOType As Integer, aintInvoceToIdDiscrp As Integer, aintInvoceToDiscType As Integer, aintInvoceToIdStorage As Integer, aintInvoceToStoraType As Integer) As String
+    Public Function of_SaveMasterAdvice(ByVal aint_BookingAdviceId As Integer, ByVal astr_BookingId As String, ByVal astr_VesselName As String, ByVal astr_VoyageExpoId As String, ByVal aint_VesselId As String, ByVal alng_VesselVoyageId As Long, ByVal astr_PortText As String, ByVal astr_PortId As String, ByVal astr_CountryTxt As String, ByVal astr_CountryId As String, ByVal astr_ETAtDate As String, ByVal astr_CustomerTxt As String, ByVal aint_CustomerId As Integer, ByVal aint_CustomBrokerId As Integer, ByVal astr_ShippingLinetxt As String, ByVal aint_ShippingLine As Integer, ByVal astr_ProductText As String, ByVal aint_ProductId As Integer, ByVal aint_IMOCode As Integer, ByVal aint_UNCode As Integer, ByVal astr_ServiceType As String, ByVal astr_AdviceComs As String, ByVal astr_User As String, ByVal aint_BlnIsSingleMerchaType As Integer, aintInvoceToIdSO As Integer, aintInvoceToSOType As Integer, aintInvoceToIdDiscrp As Integer, aintInvoceToDiscType As Integer, aintInvoceToIdStorage As Integer, aintInvoceToStoraType As Integer) As ClsAdviceResult
 
 
         ''''''''''''''''''''''''''
@@ -1880,7 +1896,7 @@ Public Class CapturaService
         Dim istr_conx As String '' cadena de conexion
         Dim lint_operation As Integer = 0
         Dim lparamGeneric As OleDbParameter = New OleDbParameter()
-
+        Dim lobj_Advicereturn As ClsAdviceResult = New ClsAdviceResult()
         Dim lstr_SQL As String
         Dim lstr_Message As String = ""
         Dim lint_itemscount As Integer = 0
@@ -1899,7 +1915,16 @@ Public Class CapturaService
 
         ' Return "holax"
 
+        'quitar espacios 
+        lobj_Advicereturn.iint_AdviceId = 0
+        lobj_Advicereturn.iint_Succes = 0
+        lobj_Advicereturn.istrKeyToken = ""
+        lobj_Advicereturn.istr_Container = ""
+        lobj_Advicereturn.istr_Message = ""
 
+        ''
+
+        astr_BookingId = astr_BookingId.Trim()
         ioleconx_conexion.ConnectionString = istr_conx
         iolecmd_comand = ioleconx_conexion.CreateCommand()
         iolecmd_comand.CommandTimeout = 0
@@ -1944,6 +1969,7 @@ Public Class CapturaService
         iolecmd_comand.Parameters.Add("@lintInvoceToDiscType", OleDbType.Integer)
         iolecmd_comand.Parameters.Add("@lintInvoceToIdStorage", OleDbType.Integer)
         iolecmd_comand.Parameters.Add("@lintInvoceToStoraType", OleDbType.Integer)
+        iolecmd_comand.Parameters.Add("@strKeyToken", OleDbType.VarChar)
 
         ''''
         ''''''''''''''
@@ -1986,7 +2012,7 @@ Public Class CapturaService
         iolecmd_comand.Parameters("@lintInvoceToDiscType").Value = aintInvoceToDiscType
         iolecmd_comand.Parameters("@lintInvoceToIdStorage").Value = aintInvoceToIdStorage
         iolecmd_comand.Parameters("@lintInvoceToStoraType").Value = aintInvoceToStoraType
-
+        iolecmd_comand.Parameters("@strKeyToken").Value = ""
 
         '''' -parametros del sp 
         ''''''''''''-- fin lista parametros del sp 
@@ -2013,9 +2039,16 @@ Public Class CapturaService
         Catch ex As Exception
             lstr_Message = ObtenerError(ex.Message, 9999)
             If lstr_Message.Length > 0 Then
-                Return lstr_Message
+                'Return lstr_Message
+                lobj_Advicereturn.istr_Message = lstr_Message
+                Return lobj_Advicereturn
+
             Else
-                Return ex.Message
+
+                'Return ex.Message
+                lobj_Advicereturn.istr_Message = ex.Message
+                Return lobj_Advicereturn
+
             End If
         Finally
             iolecmd_comand.Connection.Close()
@@ -2028,29 +2061,21 @@ Public Class CapturaService
         'Return "despues ex--" + ldt_TableResult.Rows.Count.ToString() + "-" + ldt_TableResult.Columns.Count.ToString() + "<"
         '' ver si la tabla trajo informacion 
         Try
+            lobj_Advicereturn.iint_AdviceId = Integer.Parse(ldt_TableResult(0)(0).ToString)
+            lobj_Advicereturn.istrKeyToken = ldt_TableResult(0)(1).ToString
 
-            If ldt_TableResult.Rows.Count = 1 And ldt_TableResult.Columns.Count = 1 Then
-                Dim lstr_info As String
-                lstr_info = ldt_TableResult(0)(0).ToString
-                If lstr_info.Length > 0 Then
-                    Return lstr_info
-                Else
-                    Return ""
-                End If
-            Else
-                Return "="
-            End If
         Catch ex As Exception
             Dim lstr_ex As String
             lstr_ex = ex.Message
             lstr_ex = lstr_ex
-            Return "error al actualizar informacion "
+
+            'Return "error al actualizar informacion "
+            lobj_Advicereturn.istr_Message = lstr_ex
+            Return lobj_Advicereturn
         End Try
 
-        Return ""
-
         '''''''''''''''''''''''''''''''''
-        Return ""
+        Return lobj_Advicereturn
     End Function
 
     ' Public Function ValidateMasterAdvice(ByVal aobj_Advice As ClsAdviceMasterData, ByVal astr_userId As String) As String
@@ -2109,7 +2134,7 @@ Public Class CapturaService
 
     End Function
 
-    Public Function of_saveDetailAdvice(ByVal aint_AdviceBooking As Integer, ByVal alistobj_container As ClsAdviceDetailDataBooking(), ByVal astr_user As String) As List(Of ClsAdviceResult) ' As ClsAdviceResult() ' As DataTable
+    Public Function of_saveDetailAdvice(ByVal aint_AdviceBooking As Integer, ByVal alistobj_container As ClsAdviceDetailDataBooking(), ByVal astr_user As String, ByVal astr_KeyToken As String) As List(Of ClsAdviceResult) ' As ClsAdviceResult() ' As DataTable
 
 
         Dim ldt_AdviceBookingResult As DataTable 'tabla que guardara el resultado del query
@@ -2315,7 +2340,7 @@ Public Class CapturaService
                 lobj_resultstruct(lint_idx).iint_AdviceId = aint_AdviceBooking
                 lobj_resultstruct(lint_idx).istr_Container = alistobj_container(lint_idx).istr_Container
                 lobj_resultstruct(lint_idx).istr_Message = ""
-
+                lobj_resultstruct(lint_idx).istrKeyToken = astr_KeyToken
                 lobj_ResultITem = New ClsAdviceResult
 
                 lobj_ResultITem.iint_AdviceId = aint_AdviceBooking
@@ -2388,6 +2413,7 @@ Public Class CapturaService
 
                     lobj_ResultITem.iint_Succes = 0
                     lobj_ResultITem.istr_Message = lstr_Message
+                    lobj_ResultITem.istrKeyToken = astr_KeyToken
                     llist_return.Add(lobj_ResultITem)
                     Continue For
 
@@ -2429,6 +2455,7 @@ Public Class CapturaService
 
                                 lobj_ResultITem.iint_Succes = 1
                                 lobj_ResultITem.istr_Message = ""
+                                lobj_ResultITem.istrKeyToken = astr_KeyToken
                                 llist_return.Add(lobj_ResultITem)
 
 
@@ -2489,7 +2516,7 @@ Public Class CapturaService
 
                                 lobj_resultstruct(lint_idx).iint_Succes = 0
                                 lobj_ResultITem.iint_Succes = 0
-
+                                lobj_resultstruct(lint_idx).istrKeyToken = astr_KeyToken
                                 llist_return.Add(lobj_ResultITem)
                                 Continue For
 
@@ -2511,6 +2538,7 @@ Public Class CapturaService
                             lint_counterSuccess = lint_counterSuccess + 1
                             lobj_resultstruct(lint_idx).iint_Succes = 1
                             lobj_ResultITem.iint_Succes = 1
+                            lobj_ResultITem.istrKeyToken = astr_KeyToken
                             llist_return.Add(lobj_ResultITem)
                             Continue For
                         End If
@@ -2526,6 +2554,8 @@ Public Class CapturaService
 
                     lobj_ResultITem.istr_Message = lstr_ex
                     lobj_ResultITem.iint_Succes = 0
+
+                    lobj_ResultITem.istrKeyToken = astr_KeyToken
                     llist_return.Add(lobj_ResultITem)
                 End Try
 
@@ -3037,6 +3067,8 @@ Public Class CapturaService
         iolecmd_comand.Parameters.Add("@lintInvoceToIdStorage", OleDbType.Integer)
         iolecmd_comand.Parameters.Add("@lintInvoceToStoraType", OleDbType.Integer)
 
+
+        iolecmd_comand.Parameters.Add("@strKeyToken", OleDbType.VarChar)
         '''
         '''
         ''''
@@ -3082,6 +3114,7 @@ Public Class CapturaService
         iolecmd_comand.Parameters("@lintInvoceToIdStorage").Value = 0
         iolecmd_comand.Parameters("@lintInvoceToStoraType").Value = 0
 
+        iolecmd_comand.Parameters("@strKeyToken").Value = ""
 
         '''' -parametros del sp 
         ''''''''''''-- fin lista parametros del sp 
@@ -3482,7 +3515,7 @@ Public Class CapturaService
         iolecmd_comand.Parameters.Add("@lintInvoceToIdStorage", OleDbType.Integer)
         iolecmd_comand.Parameters.Add("@lintInvoceToStoraType", OleDbType.Integer)
 
-
+        iolecmd_comand.Parameters.Add("@strKeyToken", OleDbType.VarChar)
 
         ''''
         ''''''''''''''
@@ -3527,6 +3560,7 @@ Public Class CapturaService
         iolecmd_comand.Parameters("@lintInvoceToIdStorage").Value = aintInvoceToIdStorage
         iolecmd_comand.Parameters("@lintInvoceToStoraType").Value = aintInvoceToStoraType
 
+        iolecmd_comand.Parameters("@strKeyToken").Value = ""
 
         '''' -parametros del sp 
         ''''''''''''-- fin lista parametros del sp 
@@ -3676,6 +3710,7 @@ Public Class CapturaService
         iolecmd_comand.Parameters.Add("@lintInvoceToIdStorage", OleDbType.Integer)
         iolecmd_comand.Parameters.Add("@lintInvoceToStoraType", OleDbType.Integer)
 
+        iolecmd_comand.Parameters.Add("@strKeyToken", OleDbType.VarChar)
 
         ''''
         ''''''''''''''
@@ -3720,6 +3755,7 @@ Public Class CapturaService
         iolecmd_comand.Parameters("@lintInvoceToIdStorage").Value = 0
         iolecmd_comand.Parameters("@lintInvoceToStoraType").Value = 0
 
+        iolecmd_comand.Parameters("@strKeyToken").Value = ""
 
         '''' -parametros del sp 
         ''''''''''''-- fin lista parametros del sp 
@@ -7050,6 +7086,83 @@ Public Class CapturaService
 
 
     End Function
+
+    <WebMethod()>
+    Public Function GetBookingKeyToken(ByVal ainAdviceId As Integer) As String
+
+
+        Dim idt_result As DataTable = New DataTable ' Tabla con el query de resultados 
+        Dim iAdapt_comand As OleDbDataAdapter = New OleDbDataAdapter() '' Adaptador que ejecuta la tabla y el comando
+        Dim iolecmd_comand As OleDbCommand '' objeto comando que se ejecutara
+        Dim ioleconx_conexion As OleDbConnection = New OleDbConnection() '' objeto de conexion que se usara para conectar 
+        Dim istr_conx As String '' cadena de conexion
+
+        Dim istr_key As String
+
+        istr_conx = ConfigurationManager.ConnectionStrings("dbCalathus").ConnectionString
+        ioleconx_conexion.ConnectionString = istr_conx
+        iolecmd_comand = ioleconx_conexion.CreateCommand()
+        idt_result.TableName = "TrearDatos"
+
+        Dim strSQL As String
+
+        'Dim strcontainerid As String
+
+        idt_result = New DataTable("VisitData")
+        strSQL = "spGetBKMasterAdvice"
+
+        iolecmd_comand.Parameters.Add("@aint_AdviceId", OleDbType.Integer)
+        iolecmd_comand.Parameters("@aint_AdviceId").Value = ainAdviceId
+
+        iolecmd_comand.Parameters.Add("@strBooking", OleDbType.Char)
+        iolecmd_comand.Parameters("@strBooking").Value = ""
+
+        iolecmd_comand.Parameters.Add("@intOption", OleDbType.Integer)
+        iolecmd_comand.Parameters("@intOption").Value = 2
+
+        iolecmd_comand.Parameters.Add("@aint_Param4", OleDbType.Integer)
+        iolecmd_comand.Parameters("@aint_Param4").Value = 0
+
+        iolecmd_comand.Parameters.Add("@astr_Param5", OleDbType.Char)
+        iolecmd_comand.Parameters("@astr_Param5").Value = ""
+
+
+        iolecmd_comand.CommandText = strSQL
+        iolecmd_comand.CommandType = CommandType.StoredProcedure
+        iolecmd_comand.CommandTimeout = 99999
+
+        Try
+            iAdapt_comand.SelectCommand = iolecmd_comand
+            iolecmd_comand.Connection.Open()
+            iAdapt_comand.SelectCommand.CommandTimeout = of_getMaxTimeout()
+
+            iAdapt_comand.Fill(idt_result)
+
+            istr_key = idt_result(0)(0).ToString()
+            Return istr_key
+        Catch ex As Exception
+            Dim strError As String
+            strError = ObtenerError(ex.Message, 99999)
+        Finally
+            iolecmd_comand.Connection.Close()
+            iAdapt_comand.SelectCommand.Connection.Close()
+            ioleconx_conexion.Close()
+
+            iolecmd_comand.Connection.Dispose()
+            iAdapt_comand.SelectCommand.Connection.Dispose()
+            ioleconx_conexion.Dispose()
+
+        End Try
+
+
+        iAdapt_comand = Nothing
+        iolecmd_comand = Nothing
+        ioleconx_conexion = Nothing
+
+        Return ""
+
+
+    End Function
     ''----
     <WebMethod()>
     Public Function SearchBookingAdviceMasterById(ByVal aint_BookingAdvice As Integer) As DataTable
@@ -8538,7 +8651,7 @@ Public Class CapturaService
     End Function
 
     <WebMethod()>
-    Public Function GetShippingLineByName(ByVal astrShippingName As String) As DataTable
+    Public Function GetShippingLineByName(ByVal astrShippingName As String, ByVal intConsigmentId As Integer) As DataTable
 
 
         Dim idt_result As DataTable = New DataTable ' Tabla con el query de resultados 
@@ -8571,6 +8684,10 @@ Public Class CapturaService
         'astrShippingName
         iolecmd_comand.Parameters.Add("@strLineName", OleDbType.Char)
         iolecmd_comand.Parameters("@strLineName").Value = astrShippingName
+
+        ' consignataria
+        iolecmd_comand.Parameters.Add("@intConsigmentId", OleDbType.Integer)
+        iolecmd_comand.Parameters("@intConsigmentId").Value = intConsigmentId
 
         '''' -parametros del sp 
         ''''''''''''-- fin lista parametros del sp 
@@ -11730,6 +11847,7 @@ Public Class CapturaService
         Dim lobj_resultitem As ClsAdviceResult
         Dim llist_toReturn As List(Of ClsAdviceResult) = New List(Of ClsAdviceResult)
         Dim llist_returncall As List(Of ClsAdviceResult)
+        Dim lstr_keytoken As String
         ''''''''''''----
         ''''----
 
@@ -11742,8 +11860,10 @@ Public Class CapturaService
                     acontainers_list(lint_idxA).iint_OperationType = 4
                 Next
 
+                lstr_keytoken = GetBookingKeyToken(aint_iintAdviceId)
+
                 'ldtb_TableResult = of_saveDetailAdvice(aint_iintAdviceId, acontainers_list, astr_userId)
-                llist_returncall = of_saveDetailAdvice(aint_iintAdviceId, acontainers_list, astr_userId)
+                llist_returncall = of_saveDetailAdvice(aint_iintAdviceId, acontainers_list, astr_userId, lstr_keytoken)
 
                 ' If ldtb_TableResult.Rows.Count = 1 And ldtb_TableResult.Columns.Count = 1 Then
                 'Return dt_RetrieveErrorTable(ldtb_TableResult(0)(0).ToString)
@@ -20013,7 +20133,72 @@ Public Class CapturaService
         Return of_translateDatableMX(ldtb_Result)
 
     End Function
+    '--
+    <WebMethod()>
+    Public Function GetRptVisitContListCheckIn(ByVal adtm_date As Date) As DataTable
+        Dim ldtb_Result = New DataTable() ' la tabla que obtiene el resultado
+        Dim iAdapt_comand As OleDbDataAdapter = New OleDbDataAdapter()
+        Dim iolecmd_comand As OleDbCommand = New OleDbCommand()
+        Dim ioleconx_conexion As OleDbConnection = New OleDbConnection() '' objeto de conexion que se usara para conectar 
 
+        Dim istr_conx As String = "" ' cadena de conexion
+        Dim strSQL As String = ""
+        Dim lnew_Row As DataRow
+        Dim lstr_Date As String
+        Dim lstr_dateStart As String
+        Dim ldtb_DateCheck As DataTable
+        Dim ldtb_ReturnTable = New DataTable()
+        ldtb_ReturnTable = New DataTable("ResultTable")
+
+        istr_conx = ConfigurationManager.ConnectionStrings("dbCalathus").ToString()
+        ioleconx_conexion.ConnectionString = istr_conx
+        iolecmd_comand = ioleconx_conexion.CreateCommand()
+
+        ldtb_Result = New DataTable("ResultTable")
+        strSQL = "spRptVisitContListCheckIn"
+
+        'obtener el valor de la fecha 
+        lstr_dateStart = of_ConvertDateToStringGeneralFormat(adtm_date)
+
+        iolecmd_comand.Parameters.Add("dtmStartDate", OleDbType.VarChar)
+        iolecmd_comand.Parameters("dtmStartDate").Value = lstr_dateStart
+
+        iolecmd_comand.Parameters.Add("dtmEndDate", OleDbType.VarChar)
+        iolecmd_comand.Parameters("dtmEndDate").Value = lstr_dateStart
+
+        iolecmd_comand.Parameters.Add("intMode", OleDbType.Integer)
+        iolecmd_comand.Parameters("intMode").Value = 0
+
+        iolecmd_comand.Parameters.Add("intParamA", OleDbType.Integer)
+        iolecmd_comand.Parameters("intParamA").Value = 0
+
+        iolecmd_comand.Parameters.Add("strParam", OleDbType.VarChar)
+        iolecmd_comand.Parameters("strParam").Value = ""
+
+
+        iolecmd_comand.CommandText = strSQL
+        iolecmd_comand.CommandType = CommandType.StoredProcedure
+        iolecmd_comand.CommandTimeout = 99999
+
+        Try
+            iAdapt_comand.SelectCommand = iolecmd_comand
+            iAdapt_comand.SelectCommand.CommandTimeout = of_getMaxTimeout()
+            iAdapt_comand.Fill(ldtb_Result)
+        Catch ex As Exception
+            Dim strError As String = ObtenerError(ex.Message, 99999)
+            strError = strError
+            strError = ex.Message
+        Finally
+            ioleconx_conexion.Close()
+        End Try
+
+        'retornar la tabla sin analizar
+        Return ldtb_Result
+
+        ''''''''''''''''''''''''''''''''
+
+    End Function
+    ''----
     Public Function of_translateDatableMX(ByVal adtb_source As DataTable) As DataTable
 
         Dim lstr_Valueitem As String

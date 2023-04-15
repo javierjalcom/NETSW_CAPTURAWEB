@@ -43,6 +43,7 @@
     Public strCompanyDiscrepancy As String
     Public strCompanyStorage As String
 
+    Public istrKeyToken As String
     'arreglo de productos 
     Public iobjs_ContProductList() As ClsAdviceContainerProduct ' productos de contenedores 
 End Class
