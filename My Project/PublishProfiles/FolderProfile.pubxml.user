@@ -13,13 +13,13 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/24/2018 14:38:22</publishTime>
     </File>
     <File Include="bin/NETSW_CAPTURAWEB.dll">
-      <publishTime>04/14/2023 20:11:03</publishTime>
+      <publishTime>04/22/2023 11:52:53</publishTime>
     </File>
     <File Include="bin/NETSW_CAPTURAWEB.pdb">
-      <publishTime>04/14/2023 20:11:03</publishTime>
+      <publishTime>04/22/2023 11:52:53</publishTime>
     </File>
     <File Include="bin/NETSW_CAPTURAWEB.xml">
-      <publishTime>04/14/2023 20:11:03</publishTime>
+      <publishTime>04/22/2023 11:52:53</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>05/24/2018 14:38:22</publishTime>
@@ -163,7 +163,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>04/27/2021 18:26:33</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/07/2022 18:56:54</publishTime>
+      <publishTime>04/20/2023 14:46:07</publishTime>
     </File>
   </ItemGroup>
 </Project>

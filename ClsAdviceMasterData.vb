@@ -6,8 +6,6 @@
     Public istr_portText As String
     Public istr_portId As String
     Public istr_ETA_Date As String
-    Public istr_CustomerTxt As String
-    Public iint_CustomerId As Integer
     Public iint_BrokerId As Integer
     Public istr_product As String
     Public iint_ShippingLineId As Integer
@@ -26,8 +24,6 @@
     Public iobjs_ContainerList() As ClsAdviceDetailDataBooking ' CONTENEDORES
     Public iobjs_IMOList() As ClsIMOAdvice 'IMOS extra
 
-    'campo boleano de misma mercancia para todo embargue
-    Public intblnIsUniqueMerchType As Integer
 
     Public intInvoceToIdSO As Integer
     Public intInvoceToSOType As Integer
@@ -44,6 +40,17 @@
     Public strCompanyStorage As String
 
     Public istrKeyToken As String
+
+    Public intRequiredByType As Integer
+    Public intRequiredBy As Integer
+
+    Public intExporterEntityId As Integer
+    Public intExporterType As Integer
+
+    Public intConsigAgencyId As Integer
+
+    Public strCompanyExporter As String
+
     'arreglo de productos 
     Public iobjs_ContProductList() As ClsAdviceContainerProduct ' productos de contenedores 
 End Class
